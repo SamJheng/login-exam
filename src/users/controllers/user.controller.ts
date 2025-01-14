@@ -1,14 +1,19 @@
 // src/user/user.controller.ts
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UserService } from '../services/user.service';
-import { User } from '../models/user.model';
+import { Users } from '../models/users.model';
+import { isMatchPasswordByHash } from 'src/lib/salt-hash-generate';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get(':email')
-  async findByEmail(@Param('email') email: string): Promise<User | null> {
-    return this.userService.findByEmail(email);
+  @Post('login')
+  async findByEmail(
+    @Body() body: { email: string; password: string },
+  ): Promise<Users | null> {
+    const user = await this.userService.findByEmail(body.email);
+    const isMatch = await isMatchPasswordByHash(body.password, user.password);
+    return user;
   }
 }
