@@ -1,4 +1,5 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs'; // 使用 bcryptjs 替代 bcrypt
+
 export async function getSaltHashByPassWord(password: string): Promise<string> {
   const salt = await bcrypt.genSalt();
   const hashPassword = await bcrypt.hash(password, salt);

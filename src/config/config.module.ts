@@ -5,7 +5,12 @@ import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    SequelizeModule.forRoot(config.development),
+    SequelizeModule.forRootAsync({
+      useFactory: () => {
+        const env = process.env.NODE_ENV || 'development'; // 預設為 development
+        return config[env] || config.development;
+      },
+    }),
     JwtModule.register({
       secret: 'login-exam',
       signOptions: { expiresIn: '24h' },

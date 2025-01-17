@@ -9,7 +9,7 @@ module.exports = {
   },
   production: {
     dialect: 'mysql',
-    host: 'localhost',
+    host: 'db',
     port: 3306,
     username: 'user',
     password: '12345678',
